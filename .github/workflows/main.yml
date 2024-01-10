@@ -3,6 +3,10 @@ name: Deploy DotNet project to Azure Function App
 on:
   [push]
 
+permissions:
+  contents: read
+  id-token: write
+
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'func-fiap-store-durable-functions'
