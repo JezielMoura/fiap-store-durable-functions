@@ -14,13 +14,13 @@ namespace FiapStoreDurableFunction.Functions;
 public static class BuyOrderApproval
 {
     [Function(nameof(BuyOrderApproval))]
-    public static async Task<string> RunOrchestrator(
-        [OrchestrationTrigger] TaskOrchestrationContext context)
+    public static async Task<string> RunOrchestrator([OrchestrationTrigger] TaskOrchestrationContext context)
     {
-        ILogger logger = context.CreateReplaySafeLogger(nameof(BuyOrderApproval));
-        logger.LogInformation("Order Received.");
-        var orderRequest = context.GetInput<Order>();
+        var logger = context.CreateReplaySafeLogger(nameof(BuyOrderApproval));
 
+        logger.LogInformation("Order Received.");
+
+        var orderRequest = context.GetInput<Order>();
         var paymentDone = await context.CallActivityAsync<bool>(nameof(ProcessPayment), orderRequest);
 
         if (!paymentDone)
@@ -41,7 +41,7 @@ public static class BuyOrderApproval
     {
         bool success = PaymentGetway.Process(order);
 
-        executionContext.GetLogger(nameof(ProcessPayment)).LogInformation($"Pedido {order.IdPedido} processado.");
+        executionContext.GetLogger(nameof(ProcessPayment)).LogInformation($"Pagamento do Pedido {order.IdPedido} processado.");
 
         return success;
     }
@@ -69,12 +69,12 @@ public static class BuyOrderApproval
         OrderRepository.UpdateServiceBusPub();
     }
 
-    [Function("ProcessOrderStart")]
-    public static async Task<HttpResponseData> HttpStart(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req, [DurableClient] DurableTaskClient client, FunctionContext executionContext)
+    [Function(nameof(ProcessOrderHttpStart))]
+    public static async Task<HttpResponseData> ProcessOrderHttpStart(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, [DurableClient] DurableTaskClient client, FunctionContext executionContext)
     {
-        var logger = executionContext.GetLogger("Function1_HttpStart");
-        var order = JsonSerializer.Deserialize<Order>(await req.ReadAsStringAsync() ?? throw new ArgumentNullException(nameof(req)));
+        var logger = executionContext.GetLogger(nameof(ProcessOrderHttpStart));
+        var order = await req.ReadFromJsonAsync<Order>();
         var instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(BuyOrderApproval), order);
 
         logger.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
@@ -82,53 +82,3 @@ public static class BuyOrderApproval
         return client.CreateCheckStatusResponse(req, instanceId);
     }
 }
-/*
-//Pedido
-{
-"IdPedido": 1,
-"IdCliente": 101,
-"DataPedido": "2023-12-21T12:34:56", // Use the current date and time in ISO 8601 format
-"ValorTotal": 150.50,
-"Pago": false,
-"Aprovado": false,
-"Items": [
-{
- "IdItem": 1,
- "IdPedido": 1,
- "Produto": {
-   "IdProduto": 1001,
-   "IdTipoProduto": 201,
-   "Nome": "Product A",
-   "Preco": 30.25,
-   "Descricao": "Description of Product A",
-   "Quantidade": 2
- },
- "Preco": 30.25,
- "Quantidade": 2,
- "SubTotal": 60.50
-}
-// Add more items as needed
-]
-}
-
-//OrderRequest
-{
-"IdCliente": 123,
-"CreatedDate" : "2023-12-21T12:34:56",
-"IdProdutoXQuantidade": [
-{
- "IdProduto": 1,
- "Quantidade": 10
-},
-{
- "IdProduto": 2,
- "Quantidade": 5
-},
-{
- "IdProduto": 3,
- "Quantidade": 8
-}
-// Add more items as needed
-]
-}
-*/

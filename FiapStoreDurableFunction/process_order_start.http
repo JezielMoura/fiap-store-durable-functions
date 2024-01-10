@@ -1,7 +1,18 @@
-POST http://localhost:5000/api/ProcessOrderStart HTTP/1.1
+POST http://localhost:7071/api/ProcessOrderHttpStart HTTP/1.1
 content-type: application/json
 
 {
-    "name": "sample",
-    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+  "idPedido": 1,
+  "idCliente": 1,
+  "dataPedido": "2024-01-10T12:00:00",
+  "valorTotal": 10.0,
+  "pago": false,
+  "aprovado": false,
+  "items": [
+    {
+        "IdItem": 1,
+        "Preco": 10,
+        "Quantidade": 1
+    }
+  ]
 }
