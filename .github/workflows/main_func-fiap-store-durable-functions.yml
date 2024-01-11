@@ -39,4 +39,4 @@ jobs:
           app-name: 'func-fiap-store-durable-functions'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2CE0A6D500DB429889D497DCFD87F4A8 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_78C321E98B904C0486996E26D4582BD0 }}
