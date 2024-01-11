@@ -39,7 +39,7 @@ public static class BuyOrderApproval
     [Function(nameof(ProcessPayment))]
     public static bool ProcessPayment([ActivityTrigger] Order order, FunctionContext executionContext)
     {
-        bool success = PaymentGetway.Process(order);
+        bool success = PaymentGateway.Process(order);
 
         executionContext.GetLogger(nameof(ProcessPayment)).LogInformation($"Pagamento do Pedido {order.IdPedido} processado.");
 
