@@ -1,4 +1,4 @@
-POST https://func-fiap-store-durable-functions.azurewebsites.net/api/ProcessOrderHttpStart HTTP/1.1
+POST https://func-fiap-store.azurewebsites.net/api/ProcessOrderHttpStart HTTP/1.1
 content-type: application/json
 
 {
@@ -19,4 +19,4 @@ content-type: application/json
 
 ###
 
-GET  https://func-fiap-store-durable-functions.azurewebsites.net/api/WarmUp HTTP/1.1
+GET  https://func-fiap-store.azurewebsites.net/api/WarmUp HTTP/1.1
