@@ -17,6 +17,6 @@ content-type: application/json
   ]
 }
 
-##
+###
 
 GET  https://func-fiap-store-durable-functions.azurewebsites.net/api/WarmUp HTTP/1.1
