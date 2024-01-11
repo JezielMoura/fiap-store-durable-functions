@@ -1,7 +1,7 @@
-using FiapStoreDurableFunction.Getways;
-using FiapStoreDurableFunction.Helpers;
-using FiapStoreDurableFunction.Models;
-using FiapStoreDurableFunction.Repositories;
+using FiapStore.Getways;
+using FiapStore.Helpers;
+using FiapStore.Models;
+using FiapStore.Repositories;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
@@ -9,7 +9,7 @@ using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace FiapStoreDurableFunction.Functions;
+namespace FiapStore.Functions;
 
 public static class BuyOrderApproval
 {

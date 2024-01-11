@@ -1,6 +1,6 @@
-using FiapStoreDurableFunction.Models;
+using FiapStore.Models;
 
-namespace FiapStoreDurableFunction.Helpers;
+namespace FiapStore.Helpers;
 
 public class ServiceBusHelper
 {

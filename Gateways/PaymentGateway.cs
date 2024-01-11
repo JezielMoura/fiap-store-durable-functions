@@ -1,6 +1,6 @@
-using FiapStoreDurableFunction.Models;
+using FiapStore.Models;
 
-namespace FiapStoreDurableFunction.Getways;
+namespace FiapStore.Getways;
 
 public static class PaymentGateway
 {

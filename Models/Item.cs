@@ -1,4 +1,4 @@
-﻿namespace FiapStoreDurableFunction.Models;
+﻿namespace FiapStore.Models;
 
 public class Item
 {

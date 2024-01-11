@@ -1,5 +1,5 @@
 
-namespace FiapStoreDurableFunction.Repositories;
+namespace FiapStore.Repositories;
 
 public class OrderRepository
 {
