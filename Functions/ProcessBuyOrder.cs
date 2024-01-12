@@ -7,16 +7,15 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.DurableTask;
 using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
-using System.Text.Json;
 
 namespace FiapStore.Functions;
 
 public static class BuyOrderApproval
 {
-    [Function(nameof(BuyOrderApproval))]
+    [Function(nameof(RunOrchestrator))]
     public static async Task<string> RunOrchestrator([OrchestrationTrigger] TaskOrchestrationContext context)
     {
-        var logger = context.CreateReplaySafeLogger(nameof(BuyOrderApproval));
+        var logger = context.CreateReplaySafeLogger(nameof(RunOrchestrator));
 
         logger.LogInformation("Order Received.");
 
@@ -71,11 +70,11 @@ public static class BuyOrderApproval
 
     [Function(nameof(ProcessOrderHttpStart))]
     public static async Task<HttpResponseData> ProcessOrderHttpStart(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequestData req, [DurableClient] DurableTaskClient client, FunctionContext executionContext)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req, [DurableClient] DurableTaskClient client, FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger(nameof(ProcessOrderHttpStart));
         var order = await req.ReadFromJsonAsync<Order>();
-        var instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(BuyOrderApproval), order);
+        var instanceId = await client.ScheduleNewOrchestrationInstanceAsync(nameof(RunOrchestrator), order);
 
         logger.LogInformation("Started orchestration with ID = '{instanceId}'.", instanceId);
 
